@@ -22,9 +22,9 @@ def find_matching_category(category, category_list):
     return "No match"
 
 # Function to process and save data
-def process_data(file_upload):
-    products = pd.read_excel(file_upload, sheet_name='products')
-    shipping = pd.read_excel(file_upload, sheet_name='shipping')
+def process_data(uploaded_file):
+    products = pd.read_excel(uploaded_file, sheet_name='products')
+    shipping = pd.read_excel(uploaded_file, sheet_name='shipping')
     shipping['Category'] = shipping['Category'].str.lower().str.replace(' ','')
     shipping = shipping.drop_duplicates()
 
@@ -65,14 +65,14 @@ def process_data(file_upload):
 # Streamlit UI
 def main():
     st.title("Data Processing App")
-    st.write("This app processes and saves data to an Excel file.")
+    st.write("Drag and drop an Excel file to process and download the resulting Excel file.")
 
     # File uploader for Excel file
     uploaded_file = st.file_uploader("Upload an Excel file", type=["xls", "xlsx"])
 
-    if uploaded_file:
-        file_name = uploaded_file.name
-        st.write(f"Uploaded file: {file_name}")
+    if uploaded_file is not None:
+        st.write(f"Uploaded file: {uploaded_file.name}")
+        
         if st.button("Process Data"):
             processed_file_name = process_data(uploaded_file)
             st.success(f"Data processed and saved to 'Final_Excel.xlsx'")
