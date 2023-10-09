@@ -4,20 +4,21 @@ import pandas as pd
 import re
 import base64
 import subprocess
+import openpyxl
 
-# Install 'openpyxl' immediately when the app starts
-try:
-    import openpyxl
-except ImportError:
-    # st.warning("Installing 'openpyxl'. Please wait...")
-    result = subprocess.run(['pip', 'install', 'openpyxl'], capture_output=True, text=True)
-    if result.returncode == 0:
-        pass
-        # st.success("Successfully installed 'openpyxl'!")
-    else:
-        st.error("Failed to install 'openpyxl'. Check the error message below:")
-        st.code(result.stderr)
-        st.stop()
+# # Install 'openpyxl' immediately when the app starts
+# try:
+#     import openpyxl
+# except ImportError:
+#     # st.warning("Installing 'openpyxl'. Please wait...")
+#     result = subprocess.run(['pip', 'install', 'openpyxl'], capture_output=True, text=True)
+#     if result.returncode == 0:
+#         pass
+#         # st.success("Successfully installed 'openpyxl'!")
+#     else:
+#         st.error("Failed to install 'openpyxl'. Check the error message below:")
+#         st.code(result.stderr)
+#         st.stop()
 
 # Create a function to find the matching category
 def find_matching_category(category, category_list):
