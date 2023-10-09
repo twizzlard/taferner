@@ -9,10 +9,11 @@ import subprocess
 try:
     import openpyxl
 except ImportError:
-    st.warning("Installing 'openpyxl'. Please wait...")
+    # st.warning("Installing 'openpyxl'. Please wait...")
     result = subprocess.run(['pip', 'install', 'openpyxl'], capture_output=True, text=True)
     if result.returncode == 0:
-        st.success("Successfully installed 'openpyxl'!")
+        pass
+        # st.success("Successfully installed 'openpyxl'!")
     else:
         st.error("Failed to install 'openpyxl'. Check the error message below:")
         st.code(result.stderr)
