@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import re
+import base64
 
 # Create a function to find the matching category
 def find_matching_category(category, category_list):
@@ -21,9 +22,9 @@ def find_matching_category(category, category_list):
     return "No match"
 
 # Function to process and save data
-def process_data():
-    products = pd.read_excel('products-shipping-MATCH.xlsx', sheet_name='products')
-    shipping = pd.read_excel('products-shipping-MATCH.xlsx', sheet_name='shipping')
+def process_data(file_upload):
+    products = pd.read_excel(file_upload, sheet_name='products')
+    shipping = pd.read_excel(file_upload, sheet_name='shipping')
     shipping['Category'] = shipping['Category'].str.lower().str.replace(' ','')
     shipping = shipping.drop_duplicates()
 
@@ -59,14 +60,23 @@ def process_data():
     # Save the Excel file
     excel_writer.save()
 
+    return 'Final_Excel.xlsx'
+
 # Streamlit UI
 def main():
     st.title("Data Processing App")
     st.write("This app processes and saves data to an Excel file.")
 
-    if st.button("Process Data"):
-        process_data()
-        st.success("Data processed and saved to 'Final_Excel.xlsx'")
+    # File uploader for Excel file
+    uploaded_file = st.file_uploader("Upload an Excel file", type=["xls", "xlsx"])
+
+    if uploaded_file:
+        file_name = uploaded_file.name
+        st.write(f"Uploaded file: {file_name}")
+        if st.button("Process Data"):
+            processed_file_name = process_data(uploaded_file)
+            st.success(f"Data processed and saved to 'Final_Excel.xlsx'")
+            st.write(f"Download Processed Data: [Final_Excel.xlsx](data:application/octet-stream;base64,{base64.b64encode(open(processed_file_name, 'rb').read()).decode()})")
 
 if __name__ == "__main__":
     main()
