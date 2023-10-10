@@ -78,9 +78,13 @@ def main():
     if uploaded_file is not None:
         st.write(f"Uploaded file: {uploaded_file.name}")
 
-        processed_file_name = process_data(uploaded_file)
-        st.success(f"Data processed and saved to 'Final_Excel.xlsx'")
-        st.write(f"Download Processed Data: [Download File](data:application/octet-stream;base64,{base64.b64encode(open(processed_file_name, 'rb').read()).decode()})")
+        # Process the data and get the processed DataFrame
+        processed_df = process_data(uploaded_file)
+
+        # Provide a download link for the processed DataFrame in Excel format
+        excel_data = processed_df.to_excel(index=False)
+        b64 = base64.b64encode(excel_data).decode()
+        st.markdown(f"Download Processed Data: [Download File](data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64})", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
