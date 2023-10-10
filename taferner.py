@@ -49,13 +49,7 @@ def process_data(uploaded_file):
     # Save URLs as plaintext so they don't get cut off by Excel limitations
     products['Images'] = "'" + products['Images'].astype(str)
 
-    # Save the DataFrame to an Excel file
-    output = BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        products.to_excel(writer, index=False, sheet_name='Sheet1')
-    output.seek(0)
-
-    return output
+    return products
 
 # Streamlit UI
 def main():
