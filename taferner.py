@@ -31,7 +31,7 @@ def install_openpyxl():
 
 # Function to process and save data
 def process_data(uploaded_file):
-    products = pd.read_excel(uploaded_file, sheet_name='products')
+    products = pd.read_excel(uploaded_file, sheet_name='products',nrows=5)
     shipping = pd.read_excel(uploaded_file, sheet_name='shipping')
     shipping['Category'] = shipping['Category'].str.lower().str.replace(' ','')
     shipping = shipping.drop_duplicates()
