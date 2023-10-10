@@ -47,7 +47,7 @@ def process_data(uploaded_file):
     products = products.rename(columns={'Weight':'Weight (kg)', 'Length':'Length (cm)', 'Width':'Width (cm)', 'Height':'Height (cm)'})
 
     # Save URLs as plaintext so they don't get cut off by Excel limitations
-    # products['Images'] = "'" + products['Images'].astype(str)
+    products['Images'] = "'" + products['Images'].astype(str)
 
     return products
 
