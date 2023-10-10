@@ -60,9 +60,8 @@ def process_data(uploaded_file):
 
     # Save the DataFrame to an Excel file using XlsxWriter with options
     processed_file_name = 'Final_Excel.xlsx'
-    workbook = xlsxwriter.Workbook(processed_file_name, {'strings_to_urls': False})
-    products.to_excel(workbook, index=False, sheet_name='Sheet1')
-    workbook.close()
+    with pd.ExcelWriter(processed_file_name, engine='xlsxwriter', options={'strings_to_urls': False}) as writer:
+        products.to_excel(writer, index=False, sheet_name='Sheet1')
 
     return processed_file_name
 
