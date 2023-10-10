@@ -68,11 +68,18 @@ def main():
     if uploaded_file is not None:
         st.write(f"Uploaded file: {uploaded_file.name}")
 
-        # Process the data and get the processed Excel data
-        processed_excel_data = process_data(uploaded_file)
+        # Process the data and get the processed DataFrame
+        processed_df = process_data(uploaded_file)
 
-        # Provide a download link for the processed Excel data
-        st.markdown(f"Download Processed Data: [Download File](data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{base64.b64encode(processed_excel_data.read()).decode()})", unsafe_allow_html=True)
+        # Provide a download button for the processed Excel file
+        excel_data = processed_df.to_excel(index=False)
+        b64 = base64.b64encode(excel_data).decode()
+        st.download_button(
+            label="Download Processed Data",
+            data=b64,
+            key='download_button',
+            file_name="Processed_Data.xlsx",
+        )
 
 if __name__ == "__main__":
     main()
