@@ -1,11 +1,32 @@
-# streamlit_app.py
 import streamlit as st
 import pandas as pd
 import re
 import base64
 import subprocess
-import openpyxl
 import xlsxwriter
+import openpyxl
+
+# Create a function to find the matching category
+def find_matching_category(category, category_list):
+    category_lower = category.lower().replace(' ','')
+    for cat in category_list:
+        if category_lower == cat.lower():
+            return cat
+        elif category_lower.startswith(cat.lower() + ">"):
+            return cat
+        else:
+            # Check for partial string matching
+            parts = cat.lower().split(" > ")
+            for i in range(len(parts) - 1, 0, -1):
+                partial_cat = " > ".join(parts[:i])
+                if category_lower.startswith(partial_cat):
+                    return partial_cat
+    return "No match"
+
+# Function to install 'openpyxl'
+def install_openpyxl():
+    result = subprocess.run(['pip', 'install', 'openpyxl'], capture_output=True, text=True)
+    return result
 
 # Function to process and save data
 def process_data(uploaded_file):
