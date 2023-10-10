@@ -1,11 +1,7 @@
-# streamlit_app.py
 import streamlit as st
 import pandas as pd
-import re
 import base64
-import subprocess
-import openpyxl
-from tempfile import NamedTemporaryFile
+from io import BytesIO
 
 # Create a function to find the matching category
 def find_matching_category(category, category_list):
@@ -24,14 +20,9 @@ def find_matching_category(category, category_list):
                     return partial_cat
     return "No match"
 
-# Function to install 'openpyxl'
-def install_openpyxl():
-    result = subprocess.run(['pip', 'install', 'openpyxl'], capture_output=True, text=True)
-    return result
-
 # Function to process and save data
 def process_data(uploaded_file):
-    products = pd.read_excel(uploaded_file, sheet_name='products',nrows=5)
+    products = pd.read_excel(uploaded_file, sheet_name='products')
     shipping = pd.read_excel(uploaded_file, sheet_name='shipping')
     shipping['Category'] = shipping['Category'].str.lower().str.replace(' ','')
     shipping = shipping.drop_duplicates()
@@ -40,8 +31,6 @@ def process_data(uploaded_file):
     categoryList = [x.replace(' ','').lower() for x in categoryList]
     categoryList = sorted(list(set(categoryList)))
 
-    products['Images'] = "'" + products['Images']
-    
     products['Categories'] = products['Categories'].ffill()
 
     # Create products['Matching_Category'] for matching purposes and find the match category for each row
@@ -58,10 +47,16 @@ def process_data(uploaded_file):
     products = products.rename(columns={'Weight':'Weight (kg)', 'Length':'Length (cm)', 'Width':'Width (cm)', 'Height':'Height (cm)'})
 
     # Save URLs as plaintext so they don't get cut off by Excel limitations
-    products['Images'] = products['Images'].astype(str)
+    products['Images'] = "'" + products['Images'].astype(str)
 
-    return products
-    
+    # Save the DataFrame to an Excel file
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter', options={'strings_to_urls': False}) as writer:
+        products.to_excel(writer, index=False, sheet_name='Sheet1')
+    output.seek(0)
+
+    return output
+
 # Streamlit UI
 def main():
     st.title("Data Processing App")
@@ -73,13 +68,11 @@ def main():
     if uploaded_file is not None:
         st.write(f"Uploaded file: {uploaded_file.name}")
 
-        # Process the data and get the processed DataFrame
-        processed_file_name = process_data(uploaded_file)
+        # Process the data and get the processed Excel data
+        processed_excel_data = process_data(uploaded_file)
 
-        # Provide a download link for the processed Excel file
-        with open(processed_file_name, 'rb') as file:
-            b64 = base64.b64encode(file.read()).decode()
-            st.markdown(f"Download Processed Data: [Download File](data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64})", unsafe_allow_html=True)
+        # Provide a download link for the processed Excel data
+        st.markdown(f"Download Processed Data: [Download File](data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{base64.b64encode(processed_excel_data.read()).decode()})", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
