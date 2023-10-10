@@ -40,6 +40,8 @@ def process_data(uploaded_file):
     categoryList = [x.replace(' ','').lower() for x in categoryList]
     categoryList = sorted(list(set(categoryList)))
 
+    products['Images'] = "'" + products['Images']
+    
     products['Categories'] = products['Categories'].ffill()
 
     # Create products['Matching_Category'] for matching purposes and find the match category for each row
