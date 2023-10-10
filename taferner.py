@@ -51,7 +51,7 @@ def process_data(uploaded_file):
 
     # Save the DataFrame to an Excel file
     output = BytesIO()
-    with pd.ExcelWriter(output, engine='xlsxwriter', options={'strings_to_urls': False}) as writer:
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         products.to_excel(writer, index=False, sheet_name='Sheet1')
     output.seek(0)
 
