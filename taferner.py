@@ -72,14 +72,16 @@ def main():
         processed_df = process_data(uploaded_file)
 
         # Provide a download button for the processed Excel file
-        excel_data = processed_df.to_excel(index=False)
-        b64 = base64.b64encode(excel_data).decode()
-        st.download_button(
-            label="Download Processed Data",
-            data=b64,
-            key='download_button',
-            file_name="Processed_Data.xlsx",
-        )
+        excel_file_name = 'Processed_Data.xlsx'
+        processed_df.to_excel(excel_file_name, index=False)
+        with open(excel_file_name, "rb") as file:
+            contents = file.read()
+            st.download_button(
+                label="Download Processed Data",
+                data=contents,
+                key='download_button',
+                file_name=excel_file_name,
+            )
 
 if __name__ == "__main__":
     main()
