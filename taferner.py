@@ -1,3 +1,4 @@
+# streamlit_app.py
 import streamlit as st
 import pandas as pd
 import re
@@ -57,10 +58,11 @@ def process_data(uploaded_file):
     # Save URLs as plaintext so they don't get cut off by Excel limitations
     products['Images'] = products['Images'].astype(str)
 
-    # Save the DataFrame to an Excel file using XlsxWriter
+    # Save the DataFrame to an Excel file using XlsxWriter with options
     processed_file_name = 'Final_Excel.xlsx'
-    with pd.ExcelWriter(processed_file_name, engine='xlsxwriter', options={'strings_to_urls': False}) as writer:
-        products.to_excel(writer, index=False, sheet_name='Sheet1')
+    workbook = xlsxwriter.Workbook(processed_file_name, {'strings_to_urls': False})
+    products.to_excel(workbook, index=False, sheet_name='Sheet1')
+    workbook.close()
 
     return processed_file_name
 
