@@ -4,8 +4,8 @@ import pandas as pd
 import re
 import base64
 import subprocess
-import xlsxwriter
 import openpyxl
+from tempfile import NamedTemporaryFile
 
 # Create a function to find the matching category
 def find_matching_category(category, category_list):
@@ -74,19 +74,12 @@ def main():
         st.write(f"Uploaded file: {uploaded_file.name}")
 
         # Process the data and get the processed DataFrame
-        processed_df = process_data(uploaded_file)
+        processed_file_name = process_data(uploaded_file)
 
-        # Provide a download link for the processed DataFrame in Excel format
-        excel_data = processed_df.to_excel(index=False)
-
-        # Create a BytesIO object and save the Excel data to it
-        excel_buffer = BytesIO()
-        excel_data.save(excel_buffer)
-        excel_buffer.seek(0)
-
-        # Generate a download link for the Excel data
-        b64 = base64.b64encode(excel_buffer.read()).decode()
-        st.markdown(f"Download Processed Data: [Download File](data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64})", unsafe_allow_html=True)
+        # Provide a download link for the processed Excel file
+        with open(processed_file_name, 'rb') as file:
+            b64 = base64.b64encode(file.read()).decode()
+            st.markdown(f"Download Processed Data: [Download File](data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64})", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
