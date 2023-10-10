@@ -58,9 +58,10 @@ def process_data(uploaded_file):
     # Save URLs as plaintext so they don't get cut off by Excel limitations
     products['Images'] = products['Images'].astype(str)
 
-    # Save the DataFrame to an Excel file using Pandas with 'openpyxl' engine and options
+    # Save the DataFrame to an Excel file using Pandas with 'XlsxWriter' engine
     processed_file_name = 'Final_Excel.xlsx'
-    products.to_excel(processed_file_name, index=False, engine='openpyxl', options={'strings_to_urls': False})
+    products.to_excel(processed_file_name, index=False, engine='xlsxwriter')
+
 
     return processed_file_name
 
