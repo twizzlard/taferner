@@ -3,7 +3,12 @@ import pandas as pd
 import base64
 from io import BytesIO
 
+non_matches=[]
+
 def find_matching_category(category, category_list):
+
+    global non_matches
+    
     category_lower = category.lower().replace(' ','')
     
     while category_lower not in category_list and category_lower:
@@ -21,6 +26,9 @@ def find_matching_category(category, category_list):
 
 # Function to process and save data
 def process_data(uploaded_file):
+
+    global non_matches
+    
     products = pd.read_excel(uploaded_file, sheet_name='products')
     shipping = pd.read_excel(uploaded_file, sheet_name='shipping')
     shipping['Category'] = shipping['Category'].str.lower().str.replace(' ','')
@@ -52,8 +60,8 @@ def process_data(uploaded_file):
 
 # Streamlit UI
 def main():
-    
-    non_matches = []    
+
+    global non_matches
     
     st.title("WooCommerce XLSX Processing App")
     st.write("Upload a WooCommerce XLSX to process.")
