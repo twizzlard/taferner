@@ -3,8 +3,6 @@ import pandas as pd
 import base64
 from io import BytesIO
 
-non_matches = []
-
 def find_matching_category(category, category_list):
     category_lower = category.lower().replace(' ','')
     
@@ -54,21 +52,20 @@ def process_data(uploaded_file):
 
 # Streamlit UI
 def main():
-    st.title("Data Processing App")
-    st.write("Upload an Excel file to process and download the resulting Excel file.")
+    
+    non_matches = []    
+    
+    st.title("WooCommerce XLSX Processing App")
+    st.write("Upload a WooCommerce XLSX to process.")
 
     # File uploader for Excel file
     uploaded_file = st.file_uploader("Upload an Excel file", type=["xls", "xlsx"])
 
     if uploaded_file is not None:
-        st.write(f"Uploaded file: {uploaded_file.name}")
+        st.write(f"Uploaded file: {uploaded_file.name}. This next part may take a few minutes.")
 
         # Process the data and get the processed DataFrame
         processed_df = process_data(uploaded_file)
-
-        # List categories without matches
-        non_matches = sorted(list(set(non_matches)))
-        st.write(f"Categories without matches: {non_matches}")
 
         # Provide a download button for the processed Excel file
         excel_file_name = 'Processed_Data.xlsx'
@@ -81,6 +78,10 @@ def main():
                 key='download_button',
                 file_name=excel_file_name,
             )
-
+        
+        # List categories without matches
+        non_matches = sorted(list(set(non_matches)))
+        st.write(f"Categories without matches: {non_matches}")
+        
 if __name__ == "__main__":
     main()
