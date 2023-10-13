@@ -20,6 +20,7 @@ def find_matching_category(category, category_list):
         return category_lower
     else:
         for cat in category_list:
+            category_lower = category.lower().replace(' ','')
             if category_lower in cat:
                 return cat
             else:
