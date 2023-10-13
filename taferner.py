@@ -19,9 +19,14 @@ def find_matching_category(category, category_list):
 #         print(f"Found a match: {category_lower}")
         return category_lower
     else:
+        for cat in category_list:
+            if category_lower in cat:
+                return cat
+            else:
+                pass
+        
         print(category)
         non_matches.append(category)
-#         print("No match found in the list.")
         return "No match"
 
 # Function to process and save data
@@ -88,8 +93,10 @@ def main():
             )
         
         # List categories without matches
-        non_matches = sorted(list(set(non_matches)))
-        st.write(f"Categories without matches: {non_matches}")
+        non_matches = sorted(list(set(non_matches))
+        st.write("Categories without matches:")
+        for category in non_matches:
+            st.write(category)
         
 if __name__ == "__main__":
     main()
