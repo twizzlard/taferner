@@ -84,6 +84,7 @@ def main():
         processed_df = process_data(uploaded_file)
 
         # List categories without matches
+        non_matches = sorted(list(set(non_matches)))
         st.write(f"Categories without matches: {non_matches}")
 
         # Provide a download button for the processed Excel file
