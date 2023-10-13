@@ -3,6 +3,8 @@ import pandas as pd
 import base64
 from io import BytesIO
 
+non_matches = []
+
 # Create a function to find the matching category
 def find_matching_category(category, category_list):
     category_lower = category.lower().replace(' ','')
@@ -19,6 +21,22 @@ def find_matching_category(category, category_list):
                 if category_lower.startswith(partial_cat):
                     return partial_cat
     return "No match"
+
+def find_matching_category(category, category_list):
+    category_lower = category.lower().replace(' ','')
+    
+    while category_lower not in category_list and category_lower:
+        category_lower = category_lower[:-1]
+        
+    if category_lower in category_list:
+#         print(category)
+#         print(f"Found a match: {category_lower}")
+        return category_lower
+    else:
+        print(category)
+        non_matches.append(category)
+#         print("No match found in the list.")
+        return "No match"
 
 # Function to process and save data
 def process_data(uploaded_file):
@@ -64,6 +82,9 @@ def main():
 
         # Process the data and get the processed DataFrame
         processed_df = process_data(uploaded_file)
+
+        # List categories without matches
+        st.write(f"Categories without matches: {non_matches}")
 
         # Provide a download button for the processed Excel file
         excel_file_name = 'Processed_Data.xlsx'
