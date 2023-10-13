@@ -93,7 +93,7 @@ def main():
             )
         
         # List categories without matches
-        non_matches = sorted(list(set(non_matches))
+        non_matches = sorted(list(set(non_matches)))
         st.write("Categories without matches:")
         for category in non_matches:
             st.write(category)
