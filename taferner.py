@@ -54,6 +54,7 @@ def process_data(uploaded_file):
 
     # Change 'Published' to '-1' where 'Weight' is 'draft'
     products.loc[products['Weight'] == 'draft', 'Published'] = "'-1"
+    products.loc[products['Weight'] == 'draft', 'Weight'] = ""
 
     # Drop the old dimension products columns and rename the new ones to the old names
     products = products.drop(columns=['Category', 'Weight (kg)', 'Length (cm)', 'Width (cm)', 'Height (cm)'])
