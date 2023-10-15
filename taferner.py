@@ -28,7 +28,7 @@ def find_matching_category(category, category_list):
         
         print(category)
         non_matches.append(category)
-        return "No match"
+        return "No Match"
 
 # Function to process and save data
 def process_data(uploaded_file):
@@ -55,6 +55,9 @@ def process_data(uploaded_file):
     # Change 'Published' to '-1' where 'Weight' is 'draft'
     products.loc[products['Weight'] == 'draft', 'Published'] = "'-1"
     products.loc[products['Weight'] == 'draft', 'Weight'] = ""
+    
+    # Filter the rows where Matching_Category is 'No Match' and now, the 'Matching_Category' column in rows with 'No Match' will be updated with the value in 'Category' preceded by '^'.
+    products.loc[products['Matching_Category'] == 'No Match', 'Matching_Category'] = "^" + products['Category']
 
     # Drop the old dimension products columns and rename the new ones to the old names
     products = products.drop(columns=['Category', 'Weight (kg)', 'Length (cm)', 'Width (cm)', 'Height (cm)'])
