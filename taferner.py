@@ -60,7 +60,7 @@ def process_data(uploaded_file):
     # products.loc[products['Matching_Category'] == 'No Match', 'Matching_Category'] = "^" + products['Categories']
 
     # Drop the old dimension products columns and rename the new ones to the old names
-    products = products.drop(columns=['Weight (kg)', 'Length (cm)', 'Width (cm)', 'Height (cm)'])
+    products = products.drop(columns=['Category', 'Weight (kg)', 'Length (cm)', 'Width (cm)', 'Height (cm)'])
     products = products.rename(columns={'Weight':'Weight (kg)', 'Length':'Length (cm)', 'Width':'Width (cm)', 'Height':'Height (cm)'})
 
     # Save URLs as plaintext so they don't get cut off by Excel limitations
