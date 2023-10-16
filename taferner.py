@@ -97,11 +97,11 @@ def main():
                 file_name=excel_file_name,
             )
         
-        # List categories without matches
-        non_matches = sorted(list(set(non_matches)))
-        st.write("Categories without matches:")
-        for category in non_matches:
-            st.write(category)
+        # # List categories without matches
+        # non_matches = sorted(list(set(non_matches)))
+        # st.write("Categories without matches:")
+        # for category in non_matches:
+        #     st.write(category)
         
 if __name__ == "__main__":
     main()
